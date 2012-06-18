@@ -1,0 +1,61 @@
+﻿<navigation:Page x:Class="MetroPricingSample.Views.Pricing"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation" 
+                 xmlns:Converters="clr-namespace:MetroPricingSample.Converters" 
+                 d:DesignHeight="300"
+                 d:DesignWidth="640"
+                 DataContext="{Binding PricingViewModel, Source={StaticResource Locator}}"
+                 Style="{StaticResource PageStyle}"
+                 mc:Ignorable="d">
+  <Grid x:Name="LayoutRoot">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="60" />
+      <RowDefinition Height="30" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Grid.Resources>
+      <Converters:BoolToSubscribedTextConverter x:Key="BoolToSubscribedTextConverter" />
+      <Converters:StatusToIconConverter x:Key="StatusToIconConverter" />
+      <Converters:IsoCodeToFlagConverter x:Key="IsoCodeToFlagConverter" />
+      <Converters:DateTimeToTimeConverter x:Key="DateTimeToTimeConverter" />
+    </Grid.Resources>
+
+    <StackPanel Grid.Row="0">
+      <Button x:Name="btnSubscribe"
+              Width="200"
+              Height="30"
+              HorizontalAlignment="Left" 
+              Content="{Binding Subscribed, Converter={StaticResource BoolToSubscribedTextConverter}}" 
+              Command="{Binding SubscriptionCommand, Mode=TwoWay}" />
+      <TextBlock x:Name="tbInfo" Height="30" Text="{Binding ErrorText}"/>
+      
+    </StackPanel>
+    <StackPanel Grid.Row="1" Orientation="Horizontal">
+      <TextBlock Text="Currency" Width="85" Margin="10,0,0,0"/>
+      <TextBlock Text="Previous" Width="100"/>
+      <TextBlock Text="Current" Width="100" />
+      <TextBlock Text="Delta" Width="160" />
+      <TextBlock Text="Updated" />
+    </StackPanel>
+    <ListBox x:Name="lbFxRates" 
+             ItemsSource="{Binding Path=Rates}" 
+             Grid.Row="2">
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
+            <Image Source="{Binding IsoCode, Converter={StaticResource IsoCodeToFlagConverter}}" Width="20" Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding IsoCode}" Width="50" Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding PreviousRate}" Width="100" />
+            <TextBlock Text="{Binding CurrentRate}" Width="100" />
+            <TextBlock Text="{Binding Delta}" Width="100" HorizontalAlignment="Right" Margin="0,0,10,0" />
+            <Image Source="{Binding Status, Converter={StaticResource StatusToIconConverter}}" Width="20"  />
+            <TextBlock Text="{Binding Updated, Converter={StaticResource DateTimeToTimeConverter}}" Width="200" Margin="30,0,0,0" />
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+  </Grid>
+</navigation:Page>

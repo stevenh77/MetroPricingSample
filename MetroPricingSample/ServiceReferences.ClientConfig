@@ -1,0 +1,17 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <customBinding>
+                <binding name="NetTcpBinding_IPricingService">
+                    <binaryMessageEncoding />
+                    <tcpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
+                </binding>
+            </customBinding>
+        </bindings>
+        <client>
+            <endpoint address="net.tcp://localhost:4504/PricingService" binding="customBinding"
+                bindingConfiguration="NetTcpBinding_IPricingService" contract="ServiceReference1.IPricingService"
+                name="NetTcpBinding_IPricingService" />
+        </client>
+    </system.serviceModel>
+</configuration>
